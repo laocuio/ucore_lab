@@ -5,7 +5,7 @@
 	这是echo出的提示信息，"cc"是个符号链接，默认指向gcc，在Makefile文件中根据不同情况会被赋予不同的值
 	`gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o`
 	"gcc"是编译器的名称 "-I"指定头文件的查找目录  "-fno-builtin" 不接受没有 __builtin_ 前缀的函数作为内建函数。 "-Wall"生成所有警告信息 "-ggdb"为调试器gdb 生成调试信息 "-m32"生成32位/64位机器上的代码 "-nostdinc"使编译器不再系统缺省的头文件目录里面找头文件,一般和-I联合使用,明确限定头文件的位置 "-fno-stack-protector"参数用来disable Stack-smashing protection  "-c"表明只编译不链接，即生成.o文件
-```
+	```
 	+ cc kern/libs/readline.c
 	gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/readline.c -o obj/kern/libs/readline.o
 	+ cc kern/libs/stdio.c
@@ -37,7 +37,7 @@
 	+ cc libs/string.c
 	gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  -c libs/string.c -o obj/libs/string.o
 	所有均同上
-```
+	```
 	`+ ld bin/kernel`
 	同样是提示信息。
 	`ld -m    elf_i386 -nostdlib -T tools/kernel.ld -o bin/kernel  obj/kern/init/init.o obj/kern/libs/readline.o obj/kern/libs/stdio.o obj/kern/debug/kdebug.o obj/kern/debug/kmonitor.o obj/kern/debug/panic.o obj/kern/driver/clock.o obj/kern/driver/console.o obj/kern/driver/intr.o obj/kern/driver/picirq.o obj/kern/trap/trap.o obj/kern/trap/trapentry.o obj/kern/trap/vectors.o obj/kern/mm/pmm.o  obj/libs/printfmt.o obj/libs/string.o`
