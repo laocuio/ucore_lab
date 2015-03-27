@@ -14,10 +14,10 @@
 start:
 .code16                                             # Assemble for 16-bit mode
     cli                                             # Disable interrupts
-    cld                                             # String operations increment
+    cld                                             # String operations increment  CLD用来操作方向标志位DF（Direction Flag）。CLD使DF复位，即DF=0，用于串操作指令中。与STD指令相反。
 
     # Set up the important data segment registers (DS, ES, SS).
-    xorw %ax, %ax                                   # Segment number zero
+    xorw %ax, %ax                                   # Segment number zero  .w word 16bit
     movw %ax, %ds                                   # -> Data Segment
     movw %ax, %es                                   # -> Extra Segment
     movw %ax, %ss                                   # -> Stack Segment
@@ -27,12 +27,12 @@ start:
     #  address line 20 is tied low, so that addresses higher than
     #  1MB wrap around to zero by default. This code undoes this.
 seta20.1:
-    inb $0x64, %al                                  # Wait for not busy(8042 input buffer empty).
-    testb $0x2, %al
+    inb $0x64, %al                                  # Wait for not busy(8042 input buffer empty). 从0X64端口读取一个字节放到al寄存器中，按照协议标准是读取Status Register
+    testb $0x2, %al                                #Status Register bit1 表示input register中有数据
     jnz seta20.1
 
     movb $0xd1, %al                                 # 0xd1 -> port 0x64
-    outb %al, $0x64                                 # 0xd1 means: write data to 8042's P2 port
+    outb %al, $0x64                                 # 0xd1 means: write data to 8042's P2 port 向0X64 register中写命令
 
 seta20.2:
     inb $0x64, %al                                  # Wait for not busy(8042 input buffer empty).
@@ -40,20 +40,20 @@ seta20.2:
     jnz seta20.2
 
     movb $0xdf, %al                                 # 0xdf -> port 0x60
-    outb %al, $0x60                                 # 0xdf = 11011111, means set P2's A20 bit(the 1 bit) to 1
+    outb %al, $0x60                                 # 0xdf = 11011111, means set P2's A20 bit(the 1 bit) to 1     A20Gate is enabled!
 
     # Switch from real to protected mode, using a bootstrap GDT
     # and segment translation that makes virtual addresses
     # identical to physical addresses, so that the
     # effective memory map does not change during the switch.
-    lgdt gdtdesc
-    movl %cr0, %eax
-    orl $CR0_PE_ON, %eax
+    lgdt gdtdesc									#load  全局描述符寄存器
+    movl %cr0, %eax                         #l后缀表示32位
+    orl $CR0_PE_ON, %eax				#cro控制寄存器第一位是保护允许位
     movl %eax, %cr0
 
     # Jump to next instruction, but in 32-bit code segment.
     # Switches processor into 32-bit mode.
-    ljmp $PROT_MODE_CSEG, $protcseg
+    ljmp $PROT_MODE_CSEG, $protcseg	#跳转到cs段执行，段内偏移地址位protcseg
 
 .code32                                             # Assemble for 32-bit mode
 protcseg:
@@ -81,6 +81,6 @@ gdt:
     SEG_ASM(STA_X|STA_R, 0x0, 0xffffffff)           # code seg for bootloader and kernel
     SEG_ASM(STA_W, 0x0, 0xffffffff)                 # data seg for bootloader and kernel
 
-gdtdesc:
-    .word 0x17                                      # sizeof(gdt) - 1
+gdtdesc:												#GDTR 高32位位全局描述符表的基地址，低16位为段界限 GDTR中的段界限以字节为单位。对于含有N个描述符的描述符表的段界限通常可设为8*N-1
+    .word 0x17                                      # sizeof(gdt) - 1  3个段描述符
     .long gdt                                       # address gdt

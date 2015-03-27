@@ -1,0 +1,19 @@
+通过阅读bootmain.c，了解bootloader如何加载ELF文件。通过分析源代码和通过qemu来运行并调试bootloader&OS，
+1.	bootloader如何读取硬盘扇区的？
+2.	bootloader是如何加载ELF格式的OS？
+	1.	答：bootloader中有readsetc()函数表示读取一个扇区。读取一个扇区分为等待磁盘准备好、发出读取扇区的命令、等待磁盘准备好、把磁盘扇区数据读到指定内存四个步骤。其中最关键的读取数据由如下汇编代码完成。
+				static inline void
+				insl(uint32_t port, void *addr, int cnt) {
+		    	asm volatile (
+		            "cld;"
+		            "repne; insl;"
+		            : "=D" (addr), "=c" (cnt)
+		            : "d" (port), "0" (addr), "1" (cnt)
+		            : "memory", "cc");
+				}
+				readseg()调用readsect()对硬盘完成访问。
+
+
+	2.答：现将整个文件内容读取出来，然后利用ELFHDR结构属性e_phoff、e_phnum找到proghdr，再利用proghdr的各种属性p_va、p_memsz,、p_offset完成对最终的目标文件的加载。
+	
+ 		

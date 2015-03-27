@@ -62,8 +62,11 @@ ld -m    elf_i386 -nostdlib -N -e start -Ttext 0x7C00 obj/boot/bootasm.o obj/boo
 -e start ：指定入口地址为start
 -Ttext 0x7C00 :使用0x7C00为text代码段的起始地址
 
+这之中有命令没有打出来，其作用是调用sign对bootblock.o进行处理，生成bootblock
 'obj/bootblock.out' size: 472 bytes
 build 512 bytes boot sector: 'bin/bootblock' success!
+以上两句是可执行文件sign对bootblock.o进行处理时的输出文件。
+
 dd if=/dev/zero of=bin/ucore.img count=10000
 使用dd工具生成一个5000KB的的空白镜像ucore.img,块大小默认为512B。
 dd if=bin/bootblock of=bin/ucore.img conv=notrunc

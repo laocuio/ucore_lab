@@ -10,26 +10,26 @@ main(int argc, char *argv[]) {
         fprintf(stderr, "Usage: <input filename> <output filename>\n");
         return -1;
     }
-    if (stat(argv[1], &st) != 0) {
+    if (stat(argv[1], &st) != 0) { 		//成功打开文件，失败返回-1
         fprintf(stderr, "Error opening file '%s': %s\n", argv[1], strerror(errno));
         return -1;
     }
-    printf("'%s' size: %lld bytes\n", argv[1], (long long)st.st_size);
-    if (st.st_size > 510) {
+    printf("'%s' size: %lld bytes\n", argv[1], (long long)st.st_size);   //打印文件大小
+    if (st.st_size > 510) {	//文件大小>510，则返回错误代码-1
         fprintf(stderr, "%lld >> 510!!\n", (long long)st.st_size);
         return -1;
     }
     char buf[512];
     memset(buf, 0, sizeof(buf));
     FILE *ifp = fopen(argv[1], "rb");
-    int size = fread(buf, 1, st.st_size, ifp);
+    int size = fread(buf, 1, st.st_size, ifp); //文件大小<510，则返回错误代码-1
     if (size != st.st_size) {
         fprintf(stderr, "read '%s' error, size is %d.\n", argv[1], size);
         return -1;
     }
     fclose(ifp);
     buf[510] = 0x55;
-    buf[511] = 0xAA;
+    buf[511] = 0xAA; //最后两个字节 0X55AA
     FILE *ofp = fopen(argv[2], "wb+");
     size = fwrite(buf, 1, 512, ofp);
     if (size != 512) {
