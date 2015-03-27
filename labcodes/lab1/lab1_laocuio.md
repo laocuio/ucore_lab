@@ -5,7 +5,8 @@
 
 		`gcc -Ikern/init/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/init/init.c -o obj/kern/init/init.o`
 		"gcc"是编译器的名称 "-I"指定头文件的查找目录  "-fno-builtin" 不接受没有 __builtin_ 前缀的函数作为内建函数。 "-Wall"生成所有警告信息 "-ggdb"为调试器gdb 生成调试信息 "-m32"生成32位/64位机器上的代码 "-nostdinc"使编译器不再系统缺省的头文件目录里面找头文件,一般和-I联合使用,明确限定头文件的位置 "-fno-stack-protector"参数用来disable Stack-smashing protection  "-c"表明只编译不链接，即生成.o文件
-		```
+		
+```
 		+ cc kern/libs/readline.c
 		gcc -Ikern/libs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/ -Ikern/debug/ -Ikern/driver/ -Ikern/trap/ -Ikern/mm/ -c kern/libs/readline.c -o obj/kern/libs/readline.o
 		+ cc kern/libs/stdio.c
@@ -36,7 +37,7 @@
 		gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  -c libs/printfmt.c -o obj/libs/printfmt.o
 		+ cc libs/string.c
 		gcc -Ilibs/ -fno-builtin -Wall -ggdb -m32 -gstabs -nostdinc  -fno-stack-protector -Ilibs/  -c libs/string.c -o obj/libs/string.o
-		```
+```
 		所有均同上
 
 		`+ ld bin/kernel`
