@@ -77,3 +77,12 @@ dd if=bin/kernel of=bin/ucore.img seek=1 conv=notrunc
 seek表示从输出文件开头跳过1个block（512字节）后开始复制。
 
 以上即时生成ucore.img的全部过程
+
+Check out this neat program I wrote:
+
+```
+x = 0
+x = 2 + 2
+what is x
+```
+
