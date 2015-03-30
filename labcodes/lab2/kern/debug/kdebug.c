@@ -106,7 +106,7 @@ stab_binsearch(const struct stab *stabs, int *region_left, int *region_right,
     else {
         // find rightmost region containing 'addr'
         l = *region_right;
-        for (; l > *region_left && stabs[l].n_type != type; l --)
+        for (; l > *region_left && stabs[l].n_type != type; l --)					//?
             /* do nothing */;
         *region_left = l;
     }
@@ -136,7 +136,7 @@ debuginfo_eip(uintptr_t addr, struct eipdebuginfo *info) {
     stabstr_end = __STABSTR_END__;
 
     // String table validity checks
-    if (stabstr_end <= stabstr || stabstr_end[-1] != 0) {
+    if (stabstr_end <= stabstr || stabstr_end[-1] != 0) {     //?
         return -1;
     }
 
@@ -293,7 +293,7 @@ read_eip(void) {
  * */
 void
 print_stackframe(void) {
-     /* LAB1 YOUR CODE : STEP 1 */
+     /* LAB1 2011011327: STEP 1 */
      /* (1) call read_ebp() to get the value of ebp. the type is (uint32_t);
       * (2) call read_eip() to get the value of eip. the type is (uint32_t);
       * (3) from 0 .. STACKFRAME_DEPTH
@@ -305,5 +305,22 @@ print_stackframe(void) {
       *           NOTICE: the calling funciton's return addr eip  = ss:[ebp+4]
       *                   the calling funciton's ebp = ss:[ebp]
       */
+	uint32_t my_eip, my_ebp;
+	uint32_t my_arg1,my_arg2, my_arg3, my_arg4;
+	my_eip = read_eip();
+	my_ebp = read_ebp();
+	int depth = 0;
+	while(my_ebp != 0 && STACKFRAME_DEPTH > depth)  {
+		cprintf("ebp: 0x%08x eip: 0x%08x ", my_ebp, my_eip);
+		my_arg1 = *((uint32_t*)my_ebp + 2);
+		my_arg2 = *((uint32_t*)my_ebp + 3);
+		my_arg3 = *((uint32_t*)my_ebp + 4);
+		my_arg4 = *((uint32_t*)my_ebp + 5);
+		cprintf("args:0x%08x 0x%08x 0x%08x 0x%08x\n", my_arg1, my_arg2, my_arg3, my_arg4);
+		print_debuginfo(my_eip - 1);
+		my_ebp = *((uint32_t*)my_ebp );
+		my_eip = *((uint32_t*)my_ebp + 1);
+		depth++;
+	} ;
 }
 

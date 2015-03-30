@@ -14,7 +14,7 @@
         (0xC0 | (((lim) >> 28) & 0xf)), (((base) >> 24) & 0xff)
 
 
-/* Application segment type bits */
+/* Application segment type bits */     //  段描述符中的type属性
 #define STA_X       0x8     // Executable segment
 #define STA_E       0x4     // Expand down (non-executable segments)
 #define STA_C       0x4     // Conforming code segment (executable only)

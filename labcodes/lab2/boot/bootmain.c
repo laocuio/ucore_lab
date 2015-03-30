@@ -31,12 +31,12 @@
  * */
 
 #define SECTSIZE        512
-#define ELFHDR          ((struct elfhdr *)0x10000)      // scratch space
+#define ELFHDR          ((struct elfhdr *)0x10000)      // scratch space     64KB
 
 /* waitdisk - wait for disk ready */
 static void
 waitdisk(void) {
-    while ((inb(0x1F7) & 0xC0) != 0x40)
+    while ((inb(0x1F7) & 0xC0) != 0x40)  //等待变为可读状态
         /* do nothing */;
 }
 
@@ -57,7 +57,7 @@ readsect(void *dst, uint32_t secno) {
     waitdisk();
 
     // read a sector
-    insl(0x1F0, dst, SECTSIZE / 4);
+    insl(0x1F0, dst, SECTSIZE / 4); 	/*cld 表示设置增址方向 zf = 0； repne zf =0且ecx>0重复，每重复一次cx自动减一；ins l指令从edx指定的I/O端口接收一个双字的注释保存到ES：EDI指定的存储器单元中*/
 }
 
 /* *
