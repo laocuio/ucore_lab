@@ -169,7 +169,7 @@ trap_dispatch(struct trapframe *tf) {
         c = cons_getc();
         cprintf("kbd [%03d] %c\n", c, c);
         break;
-    //LAB1 CHALLENGE 1 : YOUR CODE you should modify below codes.
+    //LAB1 CHALLENGE 1 : 2011011327 you should modify below codes.
    //challenge 部分自己没调出来，参考了答案
     case T_SWITCH_TOU:
         if (tf->tf_cs != USER_CS) {

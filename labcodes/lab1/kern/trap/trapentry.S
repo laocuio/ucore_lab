@@ -11,6 +11,7 @@ __alltraps:
     pushl %fs
     pushl %gs
     pushal
+#    在pushal指令中各寄存器的入栈顺序分别为： %eax->%ecx->%edx->%ebx->%esp->%ebp->%esi->%edi
 
     # load GD_KDATA into %ds and %es to set up data segments for kernel
     movl $GD_KDATA, %eax
