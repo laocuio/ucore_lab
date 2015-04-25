@@ -235,7 +235,7 @@ check_vma_struct(void) {
 
 struct mm_struct *check_mm_struct;
 
-// check_pgfault - check correctness of pgfault handler
+// check_pgfault - check cor	rectness of pgfault handler
 static void
 check_pgfault(void) {
     size_t nr_free_pages_store = nr_free_pages();
