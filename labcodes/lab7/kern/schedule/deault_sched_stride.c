@@ -2,12 +2,12 @@
 #include <list.h>
 #include <proc.h>
 #include <assert.h>
-#include <stride_sched.h>
+#include <default_sched.h>
 
 #define USE_SKEW_HEAP 1
 
 /* You should define the BigStride constant here*/
-/* LAB6: 2011011333 */
+/* LAB6: 2011011327 */
 #define BIG_STRIDE  0x7FFFFFFF  /* you should give a value, and is ??? */
 
 /* The compare function for two skew_heap_node_t's and the
@@ -36,7 +36,7 @@ proc_stride_comp_f(void *a, void *b)
  */
 static void
 stride_init(struct run_queue *rq) {
-     /* LAB6: 2011011333
+     /* LAB6: 2011011327
       * (1) init the ready process list: rq->run_list
       * (2) init the run pool: rq->lab6_run_pool
       * (3) set number of process: rq->proc_num to 0
@@ -62,7 +62,7 @@ stride_init(struct run_queue *rq) {
  */
 static void
 stride_enqueue(struct run_queue *rq, struct proc_struct *proc) {
-     /* LAB6: 2011011333
+     /* LAB6: 2011011327
       * (1) insert the proc into rq correctly
       * NOTICE: you can use skew_heap or list. Important functions
       *         skew_heap_insert: insert a entry into skew_heap
@@ -90,7 +90,7 @@ stride_enqueue(struct run_queue *rq, struct proc_struct *proc) {
  */
 static void
 stride_dequeue(struct run_queue *rq, struct proc_struct *proc) {
-     /* LAB6: 2011011333
+     /* LAB6: 2011011327
       * (1) remove the proc from rq correctly
       * NOTICE: you can use skew_heap or list. Important functions
       *         skew_heap_remove: remove a entry from skew_heap
@@ -115,7 +115,7 @@ stride_dequeue(struct run_queue *rq, struct proc_struct *proc) {
  */
 static struct proc_struct *
 stride_pick_next(struct run_queue *rq) {
-     /* LAB6: 2011011333
+     /* LAB6: 2011011327
       * (1) get a  proc_struct pointer p  with the minimum value of stride
              (1.1) If using skew_heap, we can use le2proc get the p from rq->lab6_run_pool
              (1.2) If using list, we have to search list to find the p with minimum stride value
@@ -142,7 +142,7 @@ stride_pick_next(struct run_queue *rq) {
  */
 static void
 stride_proc_tick(struct run_queue *rq, struct proc_struct *proc) {
-     /* LAB6: 2011011333 */
+     /* LAB6: 2011011327 */
     if (proc->time_slice > 0) {
         proc->time_slice --;
     }
@@ -151,7 +151,7 @@ stride_proc_tick(struct run_queue *rq, struct proc_struct *proc) {
     }
 }
 
-struct sched_class stride_sched_class = {
+struct sched_class default_sched_stride_class = {
      .name = "stride_scheduler",
      .init = stride_init,
      .enqueue = stride_enqueue,
